@@ -17,28 +17,27 @@ st.set_page_config(
 # Custom CSS
 st.markdown("""
 <style>
-    .stApp { background-color: #F0F4F8; }
-    .main { background-color: #F0F4F8; }
-    h1 { color: #2D3748; font-family: 'Georgia', serif; }
+   .stApp { background-color: #FDF6F0; }
+    .main { background-color: #FDF6F0; }
+    h1 { color: #1A1A1A; font-family: 'Georgia', serif; }
     .emotion-card {
-        background: #FFFFFF;
+        background: #FFF0F3;
         border-radius: 14px;
         padding: 20px;
-        border: 1px solid #D9E4EF;
+        border: 1px solid #F5C6D0;
         margin: 10px 0;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        box-shadow: 0 2px 10px rgba(0,0,0,0.04);
     }
     .metric-card {
-        background: #FFFFFF;
+        background: #FFF0F3;
         border-radius: 14px;
         padding: 18px;
-        border: 1px solid #D9E4EF;
+        border: 1px solid #F5C6D0;
         text-align: center;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        box-shadow: 0 2px 10px rgba(0,0,0,0.04);
     }
 </style>
 """, unsafe_allow_html=True)
-
 # Emotion config
 EMOTION_CONFIG = {
     "joy":      {"emoji": "😊", "color": "#2E7D5E", "label": "Joy"},
