@@ -36,15 +36,11 @@ st.markdown("""
         font-family: 'Georgia', serif !important;
     }
     /* Text area and inputs */
-   .stTextArea textarea {
-        background-color: #1A1A1A !important;
-        color: #FFFFFF !important;
+    .stTextArea textarea {
+        background-color: #FFFFFF !important;
+        color: #1A1A1A !important;
         border: 1.5px solid #E8C9B0 !important;
         border-radius: 10px !important;
-    }
-    .stTextArea textarea::placeholder {
-        color: #AAAAAA !important;
-
     }
     /* Tabs */
     .stTabs [data-baseweb="tab-list"] {
@@ -62,7 +58,7 @@ st.markdown("""
     }
     /* Button */
     .stButton > button {
-        background-color: #1A1A1A !important;
+        background-color: #C96A8A !important;
         color: #FFFFFF !important;
         border: none !important;
         border-radius: 10px !important;
@@ -70,7 +66,7 @@ st.markdown("""
         padding: 12px !important;
     }
     .stButton > button:hover {
-        background-color: #333333 !important;
+        background-color: #B05575 !important;
     }
     /* Download button */
     .stDownloadButton > button {
