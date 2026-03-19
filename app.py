@@ -36,12 +36,15 @@ st.markdown("""
         font-family: 'Georgia', serif !important;
     }
     /* Text area and inputs */
-    .stTextArea textarea {
-        background-color: #FFFFFF !important;
-        color: #1A1A1A !important;
+   .stTextArea textarea {
+        background-color: #1A1A1A !important;
+        color: #FFFFFF !important;
         border: 1.5px solid #E8C9B0 !important;
         border-radius: 10px !important;
-    
+    }
+    .stTextArea textarea::placeholder {
+        color: #CCCCCC !important;
+        opacity: 1 !important;
     }
     /* Tabs */
     .stTabs [data-baseweb="tab-list"] {
