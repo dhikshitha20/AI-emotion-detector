@@ -59,7 +59,7 @@ st.markdown("""
     }
     /* Button */
     .stButton > button {
-        background-color: #C96A8A !important;
+        background-color: #1A1A1A !important;
         color: #FFFFFF !important;
         border: none !important;
         border-radius: 10px !important;
@@ -67,7 +67,7 @@ st.markdown("""
         padding: 12px !important;
     }
     .stButton > button:hover {
-        background-color: #B05575 !important;
+        background-color: #333333 !important;
     }
     /* Download button */
     .stDownloadButton > button {
