@@ -37,13 +37,11 @@ st.markdown("""
     }
     /* Text area and inputs */
     .stTextArea textarea {
-        background-color: #1A1A1A !important;
-        color: #FFFFFF !important;
+        background-color: #FFFFFF !important;
+        color: #1A1A1A !important;
         border: 1.5px solid #E8C9B0 !important;
         border-radius: 10px !important;
-    }
-    .stTextArea textarea::placeholder {
-        color: #AAAAAA !important;
+    
     }
     /* Tabs */
     .stTabs [data-baseweb="tab-list"] {
