@@ -14,30 +14,105 @@ st.set_page_config(
     layout="wide"
 )
 
-# Custom CSS
+# Custom CSS - Force beige light theme
 st.markdown("""
 <style>
-   .stApp { background-color: #FDF6F0; }
-    .main { background-color: #FDF6F0; }
-    h1 { color: #1A1A1A; font-family: 'Georgia', serif; }
+    /* Force entire app beige */
+    .stApp {
+        background-color: #FDF6F0 !important;
+    }
+    [data-testid="stAppViewContainer"] {
+        background-color: #FDF6F0 !important;
+    }
+    [data-testid="stHeader"] {
+        background-color: #FDF6F0 !important;
+    }
+    [data-testid="stSidebar"] {
+        background-color: #FFF0E8 !important;
+    }
+    /* All text black */
+    html, body, p, span, div, label, h1, h2, h3, h4, h5 {
+        color: #1A1A1A !important;
+        font-family: 'Georgia', serif !important;
+    }
+    /* Text area and inputs */
+    .stTextArea textarea {
+        background-color: #FFFFFF !important;
+        color: #1A1A1A !important;
+        border: 1.5px solid #E8C9B0 !important;
+        border-radius: 10px !important;
+    }
+    /* Tabs */
+    .stTabs [data-baseweb="tab-list"] {
+        background-color: #FFF0E8 !important;
+        border-radius: 10px;
+    }
+    .stTabs [data-baseweb="tab"] {
+        color: #1A1A1A !important;
+        background-color: transparent !important;
+    }
+    .stTabs [aria-selected="true"] {
+        background-color: #FFFFFF !important;
+        color: #1A1A1A !important;
+        border-radius: 8px !important;
+    }
+    /* Button */
+    .stButton > button {
+        background-color: #C96A8A !important;
+        color: #FFFFFF !important;
+        border: none !important;
+        border-radius: 10px !important;
+        font-size: 16px !important;
+        padding: 12px !important;
+    }
+    .stButton > button:hover {
+        background-color: #B05575 !important;
+    }
+    /* Download button */
+    .stDownloadButton > button {
+        background-color: #2E7D5E !important;
+        color: #FFFFFF !important;
+        border-radius: 10px !important;
+    }
+    /* Cards */
     .emotion-card {
-        background: #FFF0F3;
+        background: #FFF8F4 !important;
         border-radius: 14px;
         padding: 20px;
-        border: 1px solid #F5C6D0;
+        border: 1px solid #E8C9B0;
         margin: 10px 0;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
     }
     .metric-card {
-        background: #FFF0F3;
+        background: #FFF8F4 !important;
         border-radius: 14px;
         padding: 18px;
-        border: 1px solid #F5C6D0;
+        border: 1px solid #E8C9B0;
         text-align: center;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    /* Spinner */
+    .stSpinner > div {
+        border-top-color: #C96A8A !important;
+    }
+    /* File uploader */
+    [data-testid="stFileUploader"] {
+        background-color: #FFF8F4 !important;
+        border: 1.5px dashed #E8C9B0 !important;
+        border-radius: 10px !important;
+    }
+    /* Warning */
+    .stAlert {
+        background-color: #FFF0E8 !important;
+        color: #1A1A1A !important;
+    }
+    /* Divider */
+    hr {
+        border-color: #E8C9B0 !important;
     }
 </style>
 """, unsafe_allow_html=True)
+
 # Emotion config
 EMOTION_CONFIG = {
     "joy":      {"emoji": "😊", "color": "#2E7D5E", "label": "Joy"},
@@ -63,8 +138,8 @@ if "history" not in st.session_state:
     st.session_state.history = []
 
 # Header
-st.markdown("<h1 style='text-align:center;margin-bottom:4px;'>🧠 AI Emotion Detector</h1>", unsafe_allow_html=True)
-st.markdown("<p style='text-align:center;color:#718096;margin-bottom:32px;font-size:16px;'>Detect emotions from text using advanced AI</p>", unsafe_allow_html=True)
+st.markdown("<h1 style='text-align:center;margin-bottom:4px;color:#1A1A1A !important;'>🧠 AI Emotion Detector</h1>", unsafe_allow_html=True)
+st.markdown("<p style='text-align:center;color:#555555;margin-bottom:32px;font-size:16px;'>Detect emotions from text using advanced AI</p>", unsafe_allow_html=True)
 
 # Load model
 with st.spinner("Loading AI model..."):
@@ -93,7 +168,7 @@ with tab2:
 # Analyze button
 col1, col2, col3 = st.columns([1, 1, 1])
 with col2:
-    analyze_btn = st.button("🔍 Analyze Emotion", use_container_width=True, type="primary")
+    analyze_btn = st.button("🔍 Analyze Emotion", use_container_width=True)
 
 if analyze_btn and input_text.strip():
     with st.spinner("Analyzing emotions..."):
@@ -122,21 +197,21 @@ if analyze_btn and input_text.strip():
             <div class='metric-card'>
                 <div style='font-size:48px'>{top_config['emoji']}</div>
                 <div style='font-size:22px;font-weight:600;color:{top_config['color']}'>{top_config['label']}</div>
-                <div style='color:#718096;font-size:13px'>Dominant Emotion</div>
+                <div style='color:#555555;font-size:13px'>Dominant Emotion</div>
             </div>
             """, unsafe_allow_html=True)
         with col2:
             st.markdown(f"""
             <div class='metric-card'>
                 <div style='font-size:36px;font-weight:700;color:{top_config['color']}'>{round(top['score']*100,1)}%</div>
-                <div style='color:#718096;font-size:13px'>Confidence Score</div>
+                <div style='color:#555555;font-size:13px'>Confidence Score</div>
             </div>
             """, unsafe_allow_html=True)
         with col3:
             st.markdown(f"""
             <div class='metric-card'>
-                <div style='font-size:36px;font-weight:700;color:#2D3748'>{len(input_text.split())}</div>
-                <div style='color:#718096;font-size:13px'>Words Analyzed</div>
+                <div style='font-size:36px;font-weight:700;color:#1A1A1A'>{len(input_text.split())}</div>
+                <div style='color:#555555;font-size:13px'>Words Analyzed</div>
             </div>
             """, unsafe_allow_html=True)
 
@@ -153,11 +228,11 @@ if analyze_btn and input_text.strip():
             textposition="outside"
         ))
         fig.update_layout(
-            plot_bgcolor="#F0F4F8", paper_bgcolor="#F0F4F8",
-            xaxis=dict(range=[0, 110], showgrid=False, title="Confidence (%)"),
-            yaxis=dict(autorange="reversed"),
+            plot_bgcolor="#FDF6F0", paper_bgcolor="#FDF6F0",
+            xaxis=dict(range=[0, 110], showgrid=False, title="Confidence (%)", color="#1A1A1A"),
+            yaxis=dict(autorange="reversed", color="#1A1A1A"),
             height=320, margin=dict(l=20, r=40, t=20, b=20),
-            font=dict(family="sans-serif", size=13)
+            font=dict(family="Georgia, serif", size=13, color="#1A1A1A")
         )
         st.plotly_chart(fig, use_container_width=True)
 
@@ -206,7 +281,6 @@ if st.session_state.history:
     st.markdown("---")
     st.markdown("### 📜 Analysis History")
 
-    # Trend chart
     if len(st.session_state.history) > 1:
         st.markdown("#### Emotion Trend")
         df = pd.DataFrame(st.session_state.history)
@@ -216,27 +290,27 @@ if st.session_state.history:
             mode="lines+markers+text",
             text=df["emoji"],
             textposition="top center",
-            line=dict(color="#3B6CB7", width=2),
-            marker=dict(size=10, color="#3B6CB7")
+            line=dict(color="#C96A8A", width=2),
+            marker=dict(size=10, color="#C96A8A")
         ))
         fig2.update_layout(
-            plot_bgcolor="#F0F4F8", paper_bgcolor="#F0F4F8",
-            xaxis=dict(title="Analysis #", showgrid=False),
-            yaxis=dict(title="Confidence (%)", range=[0, 110]),
-            height=250, margin=dict(l=20, r=20, t=20, b=40)
+            plot_bgcolor="#FDF6F0", paper_bgcolor="#FDF6F0",
+            xaxis=dict(title="Analysis #", showgrid=False, color="#1A1A1A"),
+            yaxis=dict(title="Confidence (%)", range=[0, 110], color="#1A1A1A"),
+            height=250, margin=dict(l=20, r=20, t=20, b=40),
+            font=dict(color="#1A1A1A")
         )
         st.plotly_chart(fig2, use_container_width=True)
 
-    # History list
     for i, h in enumerate(reversed(st.session_state.history)):
         cfg = EMOTION_CONFIG.get(h["emotion"].lower(), {"emoji": "🤔", "color": "#555"})
         st.markdown(f"""
         <div class='emotion-card'>
             <span style='font-size:20px'>{h['emoji']}</span>
             <span style='font-weight:600;color:{cfg.get('color','#555')};margin-left:8px'>{h['emotion']}</span>
-            <span style='color:#718096;font-size:13px;margin-left:8px'>({h['confidence']}% confidence)</span>
-            <span style='float:right;color:#718096;font-size:12px'>{h['timestamp']}</span>
-            <br><span style='color:#4A5568;font-size:13px'>{h['text']}</span>
+            <span style='color:#555555;font-size:13px;margin-left:8px'>({h['confidence']}% confidence)</span>
+            <span style='float:right;color:#555555;font-size:12px'>{h['timestamp']}</span>
+            <br><span style='color:#1A1A1A;font-size:13px'>{h['text']}</span>
         </div>
         """, unsafe_allow_html=True)
 
