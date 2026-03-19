@@ -43,8 +43,8 @@ st.markdown("""
         border-radius: 10px !important;
     }
     .stTextArea textarea::placeholder {
-        color: #CCCCCC !important;
-        opacity: 1 !important;
+        color: #AAAAAA !important;
+
     }
     /* Tabs */
     .stTabs [data-baseweb="tab-list"] {
