@@ -4,3 +4,4 @@ torch
 plotly
 pandas
 fpdf2
+pymongo
