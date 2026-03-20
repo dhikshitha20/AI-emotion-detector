@@ -26,7 +26,7 @@ def log_to_mongo(text, top_emotion, confidence, all_scores):
     if client is None:
         return False
     try:
-        db = client["emotion_detector"]
+        db = client["Emotion_detector"]
         collection = db["logs"]
         collection.insert_one({
             "timestamp": datetime.datetime.utcnow(),
@@ -46,7 +46,7 @@ def fetch_logs(limit=50):
     if client is None:
         return []
     try:
-        db = client["emotion_detector"]
+        db = client["Emotion_detector"]
         collection = db["logs"]
         logs = list(collection.find({}, {"_id": 0}).sort("timestamp", -1).limit(limit))
         return logs
@@ -58,7 +58,7 @@ def delete_all_logs():
     if client is None:
         return False
     try:
-        db = client["emotion_detector"]
+        db = client["Emotion_detector"]
         collection = db["logs"]
         collection.delete_many({})
         return True
