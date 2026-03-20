@@ -18,7 +18,8 @@ def get_mongo_client():
         client = MongoClient(MONGO_URI, serverSelectionTimeoutMS=3000)
         client.admin.command("ping")
         return client
-    except ConnectionFailure:
+    except Exception as e:
+        st.warning(f"MongoDB connection error: {e}")
         return None
 
 def log_to_mongo(text, top_emotion, confidence, all_scores):
