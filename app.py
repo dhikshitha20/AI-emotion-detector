@@ -9,14 +9,13 @@ import os
 from pymongo import MongoClient
 from pymongo.errors import ConnectionFailure
 
-
-MONGO_URI = os.getenv("MONGO_URI", "mongodb://localhost:27017/")  # Set env var in production
+MONGO_URI = os.getenv("MONGO_URI", "mongodb://localhost:27017/")
 
 @st.cache_resource
 def get_mongo_client():
     try:
         client = MongoClient(MONGO_URI, serverSelectionTimeoutMS=3000)
-        client.admin.command("ping")  # test connection
+        client.admin.command("ping")
         return client
     except ConnectionFailure:
         return None
@@ -64,13 +63,11 @@ def delete_all_logs():
     except Exception:
         return False
 
-
 st.set_page_config(
     page_title="AI Emotion Detector",
     page_icon="🧠",
     layout="wide"
 )
-
 
 st.markdown("""
 <style>
@@ -78,7 +75,7 @@ st.markdown("""
     [data-testid="stAppViewContainer"] { background-color: #FDF6F0 !important; }
     [data-testid="stHeader"] { background-color: #FDF6F0 !important; }
     [data-testid="stSidebar"] { background-color: #FFF0E8 !important; }
-    html, body, p, span, div, label, h1, h2, h3, h4, h5 {
+    html, body, p, label, h1, h2, h3, h4, h5 {
         color: #1A1A1A !important;
         font-family: 'Georgia', serif !important;
     }
@@ -169,7 +166,6 @@ EMOTION_CONFIG = {
     "neutral":  {"emoji": "😐", "color": "#6B7280", "label": "Neutral"},
 }
 
-
 @st.cache_resource
 def load_model():
     return pipeline(
@@ -178,17 +174,12 @@ def load_model():
         top_k=None
     )
 
-
 if "history" not in st.session_state:
     st.session_state.history = []
 
-# ─────────────────────────────────────────────
-# Header
-# ─────────────────────────────────────────────
 st.markdown("<h1 style='text-align:center;margin-bottom:4px;color:#1A1A1A !important;'>🧠 AI Emotion Detector</h1>", unsafe_allow_html=True)
 st.markdown("<p style='text-align:center;color:#555555;margin-bottom:8px;font-size:16px;'>Detect emotions from text using advanced AI</p>", unsafe_allow_html=True)
 
-# MongoDB connection status badge
 mongo_client = get_mongo_client()
 if mongo_client:
     st.markdown("<div style='text-align:center'><span class='mongo-badge mongo-ok'>🍃 MongoDB Connected</span></div>", unsafe_allow_html=True)
@@ -197,10 +188,8 @@ else:
 
 st.markdown("<br>", unsafe_allow_html=True)
 
-
 with st.spinner("Loading AI model..."):
     classifier = load_model()
-
 
 st.markdown("### Analyze Text")
 tab1, tab2 = st.tabs(["✏️ Type Text", "📄 Upload File"])
@@ -225,7 +214,6 @@ col1, col2, col3 = st.columns([1, 1, 1])
 with col2:
     analyze_btn = st.button("🔍 Analyze Emotion", use_container_width=True)
 
-
 if analyze_btn and input_text.strip():
     with st.spinner("Analyzing emotions..."):
         results = classifier(input_text[:512])[0]
@@ -234,7 +222,6 @@ if analyze_btn and input_text.strip():
         top_config = EMOTION_CONFIG.get(top["label"], {"emoji": "🤔", "color": "#555", "label": top["label"]})
         all_scores = {r["label"]: round(r["score"] * 100, 1) for r in results_sorted}
 
-        
         logged = log_to_mongo(
             text=input_text,
             top_emotion=top_config["label"],
@@ -246,7 +233,6 @@ if analyze_btn and input_text.strip():
         else:
             st.toast("⚠️ Could not log to MongoDB", icon="⚠️")
 
-       
         st.session_state.history.append({
             "text": input_text[:100] + "..." if len(input_text) > 100 else input_text,
             "emotion": top_config["label"],
@@ -256,7 +242,6 @@ if analyze_btn and input_text.strip():
             "all_scores": all_scores
         })
 
-        # Results
         st.markdown("---")
         st.markdown("### Results")
 
@@ -281,7 +266,6 @@ if analyze_btn and input_text.strip():
                 <div style='color:#555555;font-size:13px'>Words Analyzed</div>
             </div>""", unsafe_allow_html=True)
 
-        # Bar chart
         st.markdown("#### Emotion Breakdown")
         labels = [EMOTION_CONFIG.get(r["label"], {"label": r["label"]})["label"] for r in results_sorted]
         scores = [round(r["score"] * 100, 1) for r in results_sorted]
@@ -302,7 +286,6 @@ if analyze_btn and input_text.strip():
         )
         st.plotly_chart(fig, use_container_width=True)
 
-        # PDF Download
         def generate_pdf():
             pdf = FPDF()
             pdf.add_page()
@@ -382,12 +365,10 @@ if st.session_state.history:
         st.session_state.history = []
         st.rerun()
 
-
 st.markdown("---")
 with st.expander("🔐 Admin — View MongoDB Logs"):
     admin_pass = st.text_input("Enter admin password", type="password", key="admin_pass")
 
-    # Set your admin password below
     ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD", "admin123")
 
     if admin_pass == ADMIN_PASSWORD:
@@ -406,7 +387,6 @@ with st.expander("🔐 Admin — View MongoDB Logs"):
         if logs:
             st.markdown(f"**{len(logs)} log(s) found**")
 
-            # Summary stats
             emotions = [l["dominant_emotion"] for l in logs]
             emotion_counts = pd.Series(emotions).value_counts()
 
@@ -425,7 +405,6 @@ with st.expander("🔐 Admin — View MongoDB Logs"):
             )
             st.plotly_chart(fig3, use_container_width=True)
 
-            # Log entries
             for log in logs:
                 ts = log.get("timestamp", "")
                 if isinstance(ts, datetime.datetime):
@@ -442,7 +421,6 @@ with st.expander("🔐 Admin — View MongoDB Logs"):
                     <br><span style='color:#333'>{text}{'...' if len(log.get('input_text','')) > 120 else ''}</span>
                 </div>""", unsafe_allow_html=True)
 
-            # Export logs as CSV
             df_logs = pd.DataFrame(logs)
             csv = df_logs.to_csv(index=False).encode("utf-8")
             st.download_button(
