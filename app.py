@@ -11,7 +11,6 @@ from pymongo.errors import ConnectionFailure
 
 
 
-@st.cache_resource
 def get_mongo_client():
     try:
         uri = st.secrets["MONGO_URI"]
@@ -38,7 +37,8 @@ def log_to_mongo(text, top_emotion, confidence, all_scores):
             "word_count": len(text.split())
         })
         return True
-    except Exception:
+    except Exception as e:
+        st.error(f"Insert error: {e}")
         return False
 
 def fetch_logs(limit=50):
