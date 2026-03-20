@@ -9,13 +9,13 @@ import os
 from pymongo import MongoClient
 from pymongo.errors import ConnectionFailure
 
-MONGO_URI = st.secrets.get("MONGO_URI", os.getenv("MONGO_URI", "mongodb://localhost:27017/"))
-ADMIN_PASSWORD = st.secrets.get("ADMIN_PASSWORD", os.getenv("ADMIN_PASSWORD", "admin123"))
+
 
 @st.cache_resource
 def get_mongo_client():
     try:
-        client = MongoClient(MONGO_URI, serverSelectionTimeoutMS=3000)
+        uri = st.secrets["MONGO_URI"]
+        client = MongoClient(uri, serverSelectionTimeoutMS=5000, tlsAllowInvalidCertificates=False)
         client.admin.command("ping")
         return client
     except Exception as e:
