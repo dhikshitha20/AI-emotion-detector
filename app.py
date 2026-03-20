@@ -9,7 +9,8 @@ import os
 from pymongo import MongoClient
 from pymongo.errors import ConnectionFailure
 
-MONGO_URI = os.getenv("MONGO_URI", "mongodb://localhost:27017/")
+MONGO_URI = st.secrets.get("MONGO_URI", os.getenv("MONGO_URI", "mongodb://localhost:27017/"))
+ADMIN_PASSWORD = st.secrets.get("ADMIN_PASSWORD", os.getenv("ADMIN_PASSWORD", "admin123"))
 
 @st.cache_resource
 def get_mongo_client():
@@ -369,7 +370,6 @@ st.markdown("---")
 with st.expander("🔐 Admin — View MongoDB Logs"):
     admin_pass = st.text_input("Enter admin password", type="password", key="admin_pass")
 
-    ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD", "admin123")
 
     if admin_pass == ADMIN_PASSWORD:
         st.success("Access granted!")
