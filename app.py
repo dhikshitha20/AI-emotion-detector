@@ -372,6 +372,7 @@ with st.expander("🔐 Admin — View MongoDB Logs"):
     admin_pass = st.text_input("Enter admin password", type="password", key="admin_pass")
 
 
+    ADMIN_PASSWORD = st.secrets.get("ADMIN_PASSWORD", "admin123")
     if admin_pass == ADMIN_PASSWORD:
         st.success("Access granted!")
 
